@@ -1,0 +1,87 @@
+# =========================
+
+# .NET / ASP.NET Core
+
+# =========================
+
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+
+# Archivos generados por compilación
+
+*.dll
+*.exe
+*.pdb
+*.cache
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio / VS Code
+
+.vs/
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+
+# Rider / JetBrains
+
+.idea/
+
+# =========================
+
+# SQLite / Bases de datos locales
+
+# =========================
+
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# =========================
+
+# Logs y archivos temporales
+
+# =========================
+
+*.log
+logs/
+temp/
+tmp/
+
+# =========================
+
+# Sistema operativo
+
+# =========================
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+
+# Paquetes / cachés
+
+# =========================
+
+.nuget/
+packages/
+
+# =========================
+
+# Archivos de entorno locales
+
+# =========================
+
+.env
+.env.*
+*.local
