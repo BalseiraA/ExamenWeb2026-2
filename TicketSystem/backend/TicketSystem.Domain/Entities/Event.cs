@@ -1,0 +1,17 @@
+using TicketSystem.Domain.Enums;
+
+namespace TicketSystem.Domain.Entities;
+
+public class Event
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public DateTime Date { get; set; }
+    public string Venue { get; set; } = string.Empty;
+    public EventStatus Status { get; set; } = EventStatus.Active;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public ICollection<TicketZone> Zones { get; set; } = new List<TicketZone>();
+    public ICollection<TicketPurchase> Purchases { get; set; } = new List<TicketPurchase>();
+}
