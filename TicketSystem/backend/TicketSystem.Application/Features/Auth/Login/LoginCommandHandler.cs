@@ -5,28 +5,28 @@ namespace TicketSystem.Application.Features.Auth.Login;
 
 public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
 {
-    // Usuario administrador hardcodeado (sistema sin registro de usuarios).
-    private const string AdminEmail = "admin@tickets.com";
-    private const string AdminPassword = "Admin123!";
-    private const string AdminRole = "Admin";
-
+    private readonly IUserRepository _userRepository;
+    private readonly IPasswordHasher _passwordHasher;
     private readonly IJwtTokenService _jwtTokenService;
 
-    public LoginCommandHandler(IJwtTokenService jwtTokenService)
+    public LoginCommandHandler(
+        IUserRepository userRepository,
+        IPasswordHasher passwordHasher,
+        IJwtTokenService jwtTokenService)
     {
+        _userRepository = userRepository;
+        _passwordHasher = passwordHasher;
         _jwtTokenService = jwtTokenService;
     }
 
-    public Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var isValid =
-            string.Equals(request.Email, AdminEmail, StringComparison.OrdinalIgnoreCase) &&
-            request.Password == AdminPassword;
+        var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
 
-        if (!isValid)
+        if (user is null || !_passwordHasher.Verify(request.Password, user.PasswordHash))
             throw new UnauthorizedAccessException("Credenciales inválidas.");
 
-        var token = _jwtTokenService.GenerateToken(AdminEmail, AdminRole);
-        return Task.FromResult(new LoginResponse(token, AdminEmail, AdminRole));
+        var token = _jwtTokenService.GenerateToken(user.Email, user.Role);
+        return new LoginResponse(token, user.Email, user.Role);
     }
 }

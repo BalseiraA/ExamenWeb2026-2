@@ -81,7 +81,7 @@ export default function LoginPage() {
         </form>
 
         <div className="mt-4 text-xs text-center text-slate-400">
-          <p>Demo: admin@tickets.com / Admin123!</p>
+          <p>Demo: admin@miapp.com / Admin123!</p>
           <Link to="/" className="text-indigo-600 hover:underline mt-2 inline-block">
             ← Volver al portal
           </Link>

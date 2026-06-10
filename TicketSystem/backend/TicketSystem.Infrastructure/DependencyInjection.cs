@@ -18,8 +18,10 @@ public static class DependencyInjection
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<ITicketZoneRepository, TicketZoneRepository>();
         services.AddScoped<ITicketPurchaseRepository, TicketPurchaseRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
 
         return services;
     }

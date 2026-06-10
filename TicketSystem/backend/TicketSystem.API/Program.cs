@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TicketSystem.API;
 using TicketSystem.Application;
+using TicketSystem.Application.Common.Interfaces;
 using TicketSystem.Infrastructure;
 using TicketSystem.Infrastructure.Persistence;
 
@@ -86,8 +87,9 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var hasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
     await db.Database.MigrateAsync();
-    await DbSeeder.SeedAsync(db);
+    await DbSeeder.SeedAsync(db, hasher);
 }
 
 if (app.Environment.IsDevelopment())

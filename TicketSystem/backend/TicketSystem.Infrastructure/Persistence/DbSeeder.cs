@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TicketSystem.Application.Common.Interfaces;
 using TicketSystem.Domain.Entities;
 using TicketSystem.Domain.Enums;
 
@@ -6,7 +7,29 @@ namespace TicketSystem.Infrastructure.Persistence;
 
 public static class DbSeeder
 {
-    public static async Task SeedAsync(AppDbContext context)
+    public static async Task SeedAsync(AppDbContext context, IPasswordHasher passwordHasher)
+    {
+        await SeedAdminAsync(context, passwordHasher);
+        await SeedEventsAsync(context);
+    }
+
+    private static async Task SeedAdminAsync(AppDbContext context, IPasswordHasher passwordHasher)
+    {
+        if (await context.Users.AnyAsync()) return;
+
+        context.Users.Add(new User
+        {
+            Name = "Administrador",
+            Email = "admin@miapp.com",
+            PasswordHash = passwordHasher.Hash("Admin123!"),
+            Role = "Admin",
+            CreatedAt = DateTime.UtcNow
+        });
+
+        await context.SaveChangesAsync();
+    }
+
+    private static async Task SeedEventsAsync(AppDbContext context)
     {
         if (await context.Events.AnyAsync()) return;
 

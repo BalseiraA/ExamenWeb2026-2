@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
     public DbSet<Event> Events => Set<Event>();
     public DbSet<TicketZone> TicketZones => Set<TicketZone>();
     public DbSet<TicketPurchase> TicketPurchases => Set<TicketPurchase>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -50,6 +51,16 @@ public class AppDbContext : DbContext
                   .WithMany()
                   .HasForeignKey(p => p.ZoneId)
                   .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(u => u.Id);
+            entity.Property(u => u.Name).IsRequired().HasMaxLength(150);
+            entity.Property(u => u.Email).IsRequired().HasMaxLength(200);
+            entity.Property(u => u.PasswordHash).IsRequired();
+            entity.Property(u => u.Role).IsRequired().HasMaxLength(20);
+            entity.HasIndex(u => u.Email).IsUnique();
         });
     }
 }
